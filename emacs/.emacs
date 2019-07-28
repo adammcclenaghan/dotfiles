@@ -24,7 +24,7 @@ There are two things you can do about this warning:
 (tool-bar-mode 0)
 (set-default-font "Ubuntu Mono-15")
 (ido-mode 1)
-(Setq Ring-bell-function 'ignore)
+(setq Ring-bell-function 'ignore)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
