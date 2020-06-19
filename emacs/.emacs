@@ -36,7 +36,7 @@ There are two things you can do about this warning:
  '(custom-enabled-themes (quote (deeper-blue)))
  '(package-selected-packages
    (quote
-    (gnu-elpa-keyring-update cargo rust-mode toml-mode lsp-ui lsp-mode company flycheck-rust use-package smex))))
+    (magit gnu-elpa-keyring-update cargo rust-mode toml-mode lsp-ui lsp-mode company flycheck-rust use-package smex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -85,3 +85,6 @@ There are two things you can do about this warning:
 (use-package flycheck-rust
   :ensure t
   :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+(use-package magit
+  :ensure t)
