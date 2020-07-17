@@ -26,7 +26,9 @@ There are two things you can do about this warning:
 (tool-bar-mode 0)
 (set-default-font "Ubuntu Mono-15")
 (ido-mode 1)
-(setq Ring-bell-function 'ignore)
+(setq visible-bell nil)
+(setq ring-bell-function 'ignore)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -88,3 +90,5 @@ There are two things you can do about this warning:
 
 (use-package magit
   :ensure t)
+
+(global-set-key (kbd "C-x g") 'magit-status)
