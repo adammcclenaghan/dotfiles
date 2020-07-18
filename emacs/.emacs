@@ -33,7 +33,7 @@ There are two things you can do about this warning:
 ; Enable line numbers in all programming modes
 (add-hook 'prog-mode-hook 'linum-mode)
 
-(Custom-set-variables
+(custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
