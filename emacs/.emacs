@@ -26,11 +26,14 @@ There are two things you can do about this warning:
 (tool-bar-mode 0)
 (set-default-font "Ubuntu Mono-15")
 (ido-mode 1)
+
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
 
+; Enable line numbers in all programming modes
+(add-hook 'prog-mode-hook 'linum-mode)
 
-(custom-set-variables
+(Custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
