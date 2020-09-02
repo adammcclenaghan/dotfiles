@@ -33,6 +33,10 @@ There are two things you can do about this warning:
 ; Enable line numbers in all programming modes
 (add-hook 'prog-mode-hook 'linum-mode)
 
+; Open header files in c++ mode by defailt
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
