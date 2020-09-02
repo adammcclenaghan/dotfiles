@@ -1,4 +1,5 @@
 alias dev='cd ~/Development'
 alias game-dev='cd ~/Development/Games/'
-alias gfap='git fetch -ap && git pull'
+alias gfp='git fetch -ap && git pull'
 alias ec='emacsclient -n'
+alias unreal='~/Development/UnrealEngine/Engine/Binaries/Linux/UE4Editor'
