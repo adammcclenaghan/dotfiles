@@ -45,7 +45,7 @@ There are two things you can do about this warning:
  '(custom-enabled-themes (quote (deeper-blue)))
  '(package-selected-packages
    (quote
-    (magit gnu-elpa-keyring-update cargo rust-mode toml-mode lsp-ui lsp-mode company flycheck-rust use-package smex))))
+    (haskell-mode go-mode magit gnu-elpa-keyring-update cargo rust-mode toml-mode lsp-ui lsp-mode company flycheck-rust use-package smex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -97,5 +97,10 @@ There are two things you can do about this warning:
 
 (use-package magit
   :ensure t)
+
+(use-package haskell-mode
+  :ensure t)
+
+(global-set-key (kbd "M-o") 'other-window)
 
 (global-set-key (kbd "C-x g") 'magit-status)
