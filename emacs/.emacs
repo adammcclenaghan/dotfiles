@@ -101,6 +101,10 @@ There are two things you can do about this warning:
 (use-package haskell-mode
   :ensure t)
 
+(use-package go-mode
+  :ensure t
+
 (global-set-key (kbd "M-o") 'other-window)
 
 (global-set-key (kbd "C-x g") 'magit-status)
+
