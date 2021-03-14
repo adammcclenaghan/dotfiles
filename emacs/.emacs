@@ -45,13 +45,24 @@ There are two things you can do about this warning:
  '(custom-enabled-themes (quote (deeper-blue)))
  '(package-selected-packages
    (quote
-    (haskell-mode go-mode magit gnu-elpa-keyring-update cargo rust-mode toml-mode lsp-ui lsp-mode company flycheck-rust use-package smex))))
+    (gdscript-mode haskell-mode go-mode magit gnu-elpa-keyring-update cargo rust-mode toml-mode lsp-ui lsp-mode company flycheck-rust use-package smex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; Prevent backup ~ files from being stored alongside originals. Keeps directories tidy.
+;; Thanks to : https://stackoverflow.com/questions/2680389/how-to-remove-all-files-ending-with-made-by-emacs/25692389
+(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+  backup-by-copying t    ; Don't delink hardlinks
+  version-control t      ; Use version numbers on backups
+  delete-old-versions t  ; Automatically delete excess backups
+  kept-new-versions 20   ; how many of the newest versions to keep
+  kept-old-versions 5    ; and how many of the old
+)
+
 
 ;; Enable server on startup
 (server-start)
@@ -107,4 +118,3 @@ There are two things you can do about this warning:
 (global-set-key (kbd "M-o") 'other-window)
 
 (global-set-key (kbd "C-x g") 'magit-status)
-
