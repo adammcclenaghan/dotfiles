@@ -43,6 +43,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (deeper-blue)))
+ 
  '(package-selected-packages
    (quote
     (gdscript-mode haskell-mode go-mode magit gnu-elpa-keyring-update cargo rust-mode toml-mode lsp-ui lsp-mode company flycheck-rust use-package smex))))
@@ -79,6 +80,12 @@ There are two things you can do about this warning:
 (use-package company
   :ensure t
   :hook (prog-mode . company-mode)
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-tooltip-align-annotations t)
+  (company-require-match 'never)
+  (company-idle-delay 0.1)
+  (company-show-numbers t)
   :config (setq company-tooltip-align-annotations t)
           (setq company-minimum-prefix-length 1))
 
