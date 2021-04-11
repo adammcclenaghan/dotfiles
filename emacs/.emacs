@@ -122,6 +122,20 @@ There are two things you can do about this warning:
 (use-package go-mode
   :ensure t)
 
+;; Define function to call when go-mode loads
+;; Adapted from https://johnsogg.github.io/emacs-golang
+(defun my-go-mode-hook ()
+  (add-hook 'before-save-hook 'gofmt-before-save) ; gofmt before every save
+  (setq gofmt-command "goimports")                ; gofmt uses invokes goimports
+  (if (not (string-match "go" compile-command))   ; set compile command default
+      (set (make-local-variable 'compile-command)
+           "go build -v && go test -v && go vet"))
+)
+
+;; Connect go-mode-hook with the function we just defined
+(add-hook 'go-mode-hook 'my-go-mode-hook)
+
+
 (global-set-key (kbd "M-o") 'other-window)
 
 (global-set-key (kbd "C-x g") 'magit-status)
