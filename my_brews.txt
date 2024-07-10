@@ -1,0 +1,12 @@
+fzf
+gh
+graphviz
+grpc
+grpcurl
+htop
+jq
+lima
+powerlevel10k
+tmux
+wireshark
+yamllint
