@@ -1,3 +1,4 @@
+; Enable melpa
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
@@ -16,43 +17,25 @@ There are two things you can do about this warning:
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 
-
-(package-initialize)
-
-
-
-(setq inhibit-startup-screen t)
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(set-frame-font "Hack")
-(ido-mode 1)
-
-(setq visible-bell nil)
-(setq ring-bell-function 'ignore)
-
-; Enable line numbers in all programming modes
-(add-hook 'prog-mode-hook 'linum-mode)
-
-; Open header files in c++ mode by defailt
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-
+;; THEME 
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (deeper-blue)))
- 
  '(package-selected-packages
-   (quote
-    (gdscript-mode haskell-mode go-mode magit gnu-elpa-keyring-update cargo rust-mode toml-mode lsp-ui lsp-mode company flycheck-rust use-package smex))))
+   '(exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+ (load-theme 'solarized-light t)
+
+
+(package-initialize)
 
 ;; Prevent backup ~ files from being stored alongside originals. Keeps directories tidy.
 ;; Thanks to : https://stackoverflow.com/questions/2680389/how-to-remove-all-files-ending-with-made-by-emacs/25692389
@@ -62,80 +45,71 @@ There are two things you can do about this warning:
   delete-old-versions t  ; Automatically delete excess backups
   kept-new-versions 20   ; how many of the newest versions to keep
   kept-old-versions 5    ; and how many of the old
-)
+  )
 
-
-;; Enable server on startup
+; Enable server on startup
 (server-start)
 
+; Screens and layouts - Requires Hack font: https://github.com/source-foundry/Hack
+(setq inhibit-startup-screen t)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(set-frame-font "Hack-13")
+(ido-mode 1)
 
-;; Rust config
+(setq visible-bell nil)
+(setq ring-bell-function 'ignore)
+
+;; Incremental completion
+(package-install 'helm)
+(require 'helm)
+;; Get use-package, nice wrapper around require
 (package-install 'use-package)
-(require 'use-package)
-(eval-when-compile (require 'use-package))
-(use-package flycheck
-  :ensure t
-  :hook (prog-mode . flycheck-mode))
+(require 'use-package) ; Ensure that use-package always tries to install if the package is missing
+(setq use-package-always-ensure t)
 
-(use-package company
-  :ensure t
-  :hook (prog-mode . company-mode)
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-tooltip-align-annotations t)
-  (company-require-match 'never)
-  (company-idle-delay 0.1)
-  (company-show-numbers t)
-  :config (setq company-tooltip-align-annotations t)
-          (setq company-minimum-prefix-length 1))
+; ----- Packages and configurations used by mutliple programming languages -----
+; Enable line numbers in all programming modes
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
-(use-package lsp-mode
-  :ensure t
-  :commands lsp
-  :config (require 'lsp-clients))
+;; Configure dired mode on darwin - ls doesn't support --dired on OSx
+(when (string= system-type "darwin")       
+  (setq dired-use-ls-dired nil))
 
-(use-package lsp-ui
-  :ensure t)
+;; Make sure env in emacs looks the same as shell. OS x sets different env when opened in shell vs UI. Annoying.
+;; https://github.com/purcell/exec-path-from-shell
+(use-package exec-path-from-shell)
+(exec-path-from-shell-initialize)
 
-(use-package toml-mode
-  :ensure t)
+;; Language server protocol support
+(use-package lsp-mode)
 
-(use-package rust-mode
-  :ensure t
-  :hook (rust-mode . lsp))
+;; UI packages for lsp mode
+(use-package lsp-ui)
 
-;; Add keybindings for interacting with Cargo
-(use-package cargo
-  :ensure t
-  :hook (rust-mode . cargo-minor-mode))
+;; Company mode adds a text completion framework, allows us to see auto completion popups as we type
+(use-package company)
+(setq company-idle-delay 0) 
+(setq company-minimum-prefix-length 1) ; Immediately show popup after one character
 
-(use-package flycheck-rust
-  :ensure t
-  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+;; Template expansion, see https://emacsconf.org/2019/talks/31/ - use "M-x yas-describle-tables" to see available snippets in the buffer's mode. Essentially, adds handy auto complete expansion for code
+(use-package yasnippet)
 
-(use-package magit
-  :ensure t)
+;; Git in emacs
+(use-package magit)
 
-(use-package haskell-mode
-  :ensure t)
-
-(use-package go-mode
-  :ensure t)
-
-;; Define function to call when go-mode loads
-;; Adapted from https://johnsogg.github.io/emacs-golang
-(defun my-go-mode-hook ()
-  (add-hook 'before-save-hook 'gofmt-before-save) ; gofmt before every save
-  (setq gofmt-command "goimports")                ; gofmt uses invokes goimports
-  (if (not (string-match "go" compile-command))   ; set compile command default
-      (set (make-local-variable 'compile-command)
-           "go build -v && go test -v && go vet"))
-)
-
-;; Connect go-mode-hook with the function we just defined
-(add-hook 'go-mode-hook 'my-go-mode-hook)
-
-
-(global-set-key (kbd "M-o") 'other-window)
-
-(global-set-key (kbd "C-x g") 'magit-status)
+;; ----- Configuration for GO -----
+;; Major mode for go - required for highlighting, indentation etc
+(use-package go-mode)
+;; Hooks for go mode
+;; NOTE: For this to work need to run: go install golang.org/x/tools/gopls@latest
+;; And ensure that $PATH has $GOPATH set in it.
+;; Major mode for go - required for highlighting, indentation etc
+;; Start LSP Mode and YASnippet mode when in go-mode
+(add-hook 'go-mode-hook #'lsp-deferred) ; This will take care of starting gopls, lsp-ui, company etc
+(add-hook 'go-mode-hook #'yas-minor-mode)
+;; Set up before-save hooks, these will do auto formatting and add/delete imports in the go file on save
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
