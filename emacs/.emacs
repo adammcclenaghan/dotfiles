@@ -25,7 +25,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
+   '(ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -46,6 +46,9 @@ There are two things you can do about this warning:
   kept-new-versions 20   ; how many of the newest versions to keep
   kept-old-versions 5    ; and how many of the old
   )
+
+;; Disable lockfiles 
+(setq create-lockfiles nil)
 
 ; Enable server on startup
 (server-start)
@@ -72,9 +75,19 @@ There are two things you can do about this warning:
 ; Enable line numbers in all programming modes
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
+; This is a nice package for switching around windows. When >2 windows it lets you pick a window with a key specifier.
+(use-package ace-window)
+(global-set-key (kbd "M-o") 'ace-window)
+
 ;; Configure dired mode on darwin - ls doesn't support --dired on OSx
 (when (string= system-type "darwin")       
   (setq dired-use-ls-dired nil))
+
+;; Increase threshold as lsp-mode suffers otherwise
+(setq gc-cons-threshold 100000000)
+
+;; Increase for lsp mode as some language servers send large responsees
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;; Make sure env in emacs looks the same as shell. OS x sets different env when opened in shell vs UI. Annoying.
 ;; https://github.com/purcell/exec-path-from-shell
@@ -113,3 +126,9 @@ There are two things you can do about this warning:
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+
+;; ----- Configuration for Terraform -----
+(use-package terraform-mode)
+;; Enables using C-c C-f to toggle visbility of a block
+(add-hook 'terraform-mode-hook #'outline-minor-mode)
