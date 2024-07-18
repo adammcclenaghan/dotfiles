@@ -48,7 +48,7 @@ There are two things you can do about this warning:
   kept-old-versions 5    ; and how many of the old
   )
 
-;; Disable lockfiles - stops 
+;; Disable lockfiles
 (setq create-lockfiles nil)
 
 ; Enable server on startup
