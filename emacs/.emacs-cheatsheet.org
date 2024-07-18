@@ -1,0 +1,36 @@
+** General
+* Shows help for current mode. || C-h m
+* Enter dired mode || C-x d
+* Run grep from current directory || M-x grep
+* In dired mode -> refresh contents of the window || g
+
+** Window management
+* Delete currently selected window pane || C-x 0
+* Change window pane (follow by number) || M-o
+* Resize window to fit its contents || C-x -
+* Enlarge vertical size of window || C-x ^
+* Change horizontal size of window || C-x { or C-x }
+* Resize window by {number} times  || C-u {number} with C-x ^ or C-x { etc.. 
+
+** Golang
+* Jump to next/previous function (Hold ctrl and meta same time) || C-M-e or C-M-a 
+* Jump to function arguments || C-c C-f a
+* Jump to function return || C-c C-f r
+* Jump to function name || C-c C-f n
+* Jump to function beginning || C-c C-f f
+* Jump to imports in file || C-c C-f i
+* Jump to function call definition || M-.
+* Go back (go to where function was called) || M-, 
+
+** Magit
+* Show git status || C-x g
+* Summarise commit & push || C-x g -> s (n times) -> c c -> C-c C-c -> P p
+* Push changes to branch || C-x g P p
+* Show transient command window (eg new branch/checkout branch) || C-x M-g
+* transient command: create a new branch || b c
+* transient command: to kill the transient command window || C-g
+* Rename a file: C-x g -> hover over file -> R
+
+** Terraform mode
+* C-c C-f || Close/open a block
+
