@@ -17,7 +17,7 @@ There are two things you can do about this warning:
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 
-;; THEME 
+;; --- THEME ---
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -34,6 +34,7 @@ There are two things you can do about this warning:
  )
  (load-theme 'solarized-light t)
 
+;; --- General emacs configuration ---
 
 (package-initialize)
 
@@ -47,7 +48,7 @@ There are two things you can do about this warning:
   kept-old-versions 5    ; and how many of the old
   )
 
-;; Disable lockfiles 
+;; Disable lockfiles - stops 
 (setq create-lockfiles nil)
 
 ; Enable server on startup
@@ -62,6 +63,9 @@ There are two things you can do about this warning:
 
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
+
+;; I like my cursor to blink forever
+(setq blink-cursor-blinks 0)
 
 ;; Incremental completion
 (package-install 'helm)
