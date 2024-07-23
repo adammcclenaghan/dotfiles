@@ -75,6 +75,8 @@ There are two things you can do about this warning:
 (require 'use-package) ; Ensure that use-package always tries to install if the package is missing
 (setq use-package-always-ensure t)
 
+(winner-mode 1)
+
 ; ----- Packages and configurations used by mutliple programming languages -----
 ; Enable line numbers in all programming modes
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
