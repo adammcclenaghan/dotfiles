@@ -3,6 +3,7 @@
 * Enter dired mode || C-x d
 * Run grep from current directory || M-x grep
 * In dired mode -> refresh contents of the window || g
+* Run shell command -> M-!
 
 ** Window management
 * Delete currently selected window pane || C-x 0
@@ -10,7 +11,11 @@
 * Resize window to fit its contents || C-x -
 * Enlarge vertical size of window || C-x ^
 * Change horizontal size of window || C-x { or C-x }
-* Resize window by {number} times  || C-u {number} with C-x ^ or C-x { etc.. 
+* Resize window by {number} times  || C-u {number} with C-x ^ or C-x { etc..
+* Swap two windows || M-x o m {number you want to swap the current window with)
+
+** General code nav
+* Find all usages of a function || M-? -> In the popup window, use C-o to show usages in the other window, then tab on the usage you care about to close the xref window and set self to usage at point
 
 ** Golang
 * Jump to next/previous function (Hold ctrl and meta same time) || C-M-e or C-M-a 
