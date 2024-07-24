@@ -1,5 +1,6 @@
 ** General
 * Shows help for current mode. || C-h m
+* Find shortcut for command (if exists) || C-h f
 * Enter dired mode || C-x d
 * Run grep from current directory || M-x grep
 * In dired mode -> refresh contents of the window || g
@@ -15,7 +16,11 @@
 * Swap two windows || M-x o m {number you want to swap the current window with)
 
 ** General code nav
+* Jump to function def || M-.
+* Jump back from function def || M-,
 * Find all usages of a function || M-? -> In the popup window, use C-o to show usages in the other window, then tab on the usage you care about to close the xref window and set self to usage at point
+* Show function defs in file with helm imenu || C-x c i
+
 
 ** Golang
 * Jump to next/previous function (Hold ctrl and meta same time) || C-M-e or C-M-a 
