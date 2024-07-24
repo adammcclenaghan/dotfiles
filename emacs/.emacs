@@ -25,7 +25,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
+   '(rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -77,7 +77,10 @@ There are two things you can do about this warning:
 
 (winner-mode 1)
 
-; ----- Packages and configurations used by mutliple programming languages -----
+;; To use without internet connection, download all of this into ~/rfc : https://www.rfc-editor.org/retrieve/bulk
+(use-package rfc-mode)
+
+; ----- Packages and configurations used for general code editing -----
 ; Enable line numbers in all programming modes
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
