@@ -25,7 +25,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
+   '(helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -88,6 +88,22 @@ There are two things you can do about this warning:
 (use-package ace-window)
 (global-set-key (kbd "M-o") 'ace-window)
 
+; Allow selecting a window to open file in when opening with dired mode
+(defun find-file-ace-window ()
+  "Use ace window to select a window for opening a file from dired."
+  (interactive)
+  (let ((file (dired-get-file-for-visit)))
+    (if (> (length (aw-window-list)) 1)
+        (aw-select "" (lambda (window)
+                        (aw-switch-to-window window)
+                        (find-file file)))
+      (find-file-other-window file))))
+
+(eval-after-load "dired" '(progn
+  (define-key dired-mode-map (kbd "o") 'find-file-ace-window) ))
+;;(define-key dired-mode-map "o" 'find-file-ace-window)
+
+
 ;; Configure dired mode on darwin - ls doesn't support --dired on OSx
 (when (string= system-type "darwin")       
   (setq dired-use-ls-dired nil))
@@ -103,11 +119,19 @@ There are two things you can do about this warning:
 (use-package exec-path-from-shell)
 (exec-path-from-shell-initialize)
 
+;; ----- Configuration used in most programming language files -----
 ;; Language server protocol support
 (use-package lsp-mode)
 
 ;; UI packages for lsp mode
 (use-package lsp-ui)
+(setq lsp-ui-doc-show-with-cursor t) ; Enable showing docs on cursor hover
+(setq lsp-ui-doc-use-webkit t)  ; Show docs in a webkit popover
+(setq lsp-ui-doc-position 'at-point) ; Show the webkit popover for docs on the cursor point
+(setq lsp-ui-doc-delay '1) ; Delay showing the popover for docs for a few seconds
+;; Remap xref-find-definitions to a nicer code navigation with lsp-ui
+(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions) 
+(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
 
 ;; Company mode adds a text completion framework, allows us to see auto completion popups as we type
 (use-package company)
@@ -119,6 +143,14 @@ There are two things you can do about this warning:
 
 ;; Git in emacs
 (use-package magit)
+
+;; Project navigation with projectile & helm
+(use-package projectile)
+(projectile-mode +1)
+; Start projectile commands with C-c p
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(use-package helm-projectile)
+(helm-projectile-on)
 
 ;; ----- Configuration for GO -----
 ;; Major mode for go - required for highlighting, indentation etc
@@ -141,3 +173,23 @@ There are two things you can do about this warning:
 (use-package terraform-mode)
 ;; Enables using C-c C-f to toggle visbility of a block
 (add-hook 'terraform-mode-hook #'outline-minor-mode)
+
+
+;; ------ Configuration of startup layout -----
+;; layout definition
+(defun my-startup-layout ()
+ (interactive)
+ (delete-other-windows)
+ (split-window-horizontally) ;; -> |
+ (next-multiframe-window)
+ (find-file "~/.emacs")
+ (split-window-vertically) ;;  -> --
+ (next-multiframe-window)
+ (dired "~")
+ (next-multiframe-window)
+ (find-file "~/.emacs")
+ (enlarge-window-horizontally 5)
+)
+
+;; execute the layout
+(my-startup-layout )
