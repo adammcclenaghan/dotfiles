@@ -3,8 +3,10 @@
 * Find shortcut for command (if exists) || C-h f
 * Enter dired mode || C-x d
 * Run grep from current directory || M-x grep
-* In dired mode -> refresh contents of the window || g
-* Run shell command -> M-!
+* In dired mode || refresh contents of the window || g
+* Run shell command || M-!
+* Run shell window || M-x shell
+* Find command for key comba || C-h k
 
 ** Window management
 * Delete currently selected window pane || C-x 0
@@ -20,7 +22,12 @@
 * Jump back from function def || M-,
 * Find all usages of a function || M-? -> In the popup window, use C-o to show usages in the other window, then tab on the usage you care about to close the xref window and set self to usage at point
 * Show function defs in file with helm imenu || C-x c i
+* Jump forward/back sexp || C-M-f // C-M-b
 
+** Project navigation with projectile
+* Grep search in project || C-p s g
+* Ag search in project || C-p s s
+* File search in project || C-p f
 
 ** Golang
 * Jump to next/previous function (Hold ctrl and meta same time) || C-M-e or C-M-a 
