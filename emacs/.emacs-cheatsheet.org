@@ -44,6 +44,8 @@
 
 ** Magit
 * Show git status || C-x g
+* Git pull || C-x g F p  [pulls from push remote] OR  C-x g F u [pulls from upstream]
+
 * Summarise commit & push || C-x g -> s (n times) -> c c -> C-c C-c -> P p
 * Push changes to branch || C-x g P p
 * Show transient command window (eg new branch/checkout branch) || C-x M-g
