@@ -23,11 +23,14 @@
 * Find all usages of a function || M-? -> In the popup window, use C-o to show usages in the other window, then tab on the usage you care about to close the xref window and set self to usage at point
 * Show function defs in file with helm imenu || C-x c i
 * Jump forward/back sexp || C-M-f // C-M-b
+* Highlight word at point || M-s h .
+* Undo highlight word at point || M-s h u
 
 ** Project navigation with projectile
-* Grep search in project || C-p s g
-* Ag search in project || C-p s s
-* File search in project || C-p f
+* Grep search in project || C-c p s g
+* Ag search in project || C-c p s s
+* File search in project || C-c p f
+* Switch to another project || C-c p p
 
 ** Golang
 * Jump to next/previous function (Hold ctrl and meta same time) || C-M-e or C-M-a 
