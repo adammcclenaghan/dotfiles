@@ -101,8 +101,6 @@ There are two things you can do about this warning:
 
 (eval-after-load "dired" '(progn
   (define-key dired-mode-map (kbd "o") 'find-file-ace-window) ))
-;;(define-key dired-mode-map "o" 'find-file-ace-window)
-
 
 ;; Configure dired mode on darwin - ls doesn't support --dired on OSx
 (when (string= system-type "darwin")       
@@ -156,7 +154,7 @@ There are two things you can do about this warning:
 ;; Major mode for go - required for highlighting, indentation etc
 (use-package go-mode)
 ;; Hooks for go mode
-;; NOTE: For this to work need to run: go install golang.org/x/tools/gopls@latest
+;; !!! NOTE !!! For this to work need to run: go install golang.org/x/tools/gopls@latest
 ;; And ensure that $PATH has $GOPATH set in it.
 ;; Major mode for go - required for highlighting, indentation etc
 ;; Start LSP Mode and YASnippet mode when in go-mode
