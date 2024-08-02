@@ -44,12 +44,15 @@
 
 ** Magit
 --- Status window actions: C-x g
+* Git fetch || f a [Fetches all remotes]
 * Git pull || g F p  [pulls from push remote] OR  g F u [pulls from upstream]
+* Git merge origin/main || m m origin/main RET
 * commit & push ||  s (n times) -> c c -> C-c C-c -> P p
 * Push changes to branch || P p
 --- File based actions: C-c M-g
 * Git blame current file || b
 --- Transient commands: C-x M-g
+* Checkout existing branch | b b
 * create a new branch || b c
 * to kill the transient command window || C-g
 * Rename a file: C-x g -> hover over file -> R
