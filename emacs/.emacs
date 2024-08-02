@@ -45,11 +45,16 @@ There are two things you can do about this warning:
   version-control t      ; Use version numbers on backups
   delete-old-versions t  ; Automatically delete excess backups
   kept-new-versions 20   ; how many of the newest versions to keep
-  kept-old-versions 5    ; and how many of the old
+  kept-old-versions 5    ; and how many of the old3
   )
 
 ;; Disable lockfiles
 (setq create-lockfiles nil)
+;; Ensure the directory ~/.saves exists
+(unless (file-exists-p "~/.saves")
+  (make-directory "~/.saves"))
+; Move temp files to a separate dir
+(setq auto-save-file-name-transforms `((".*" "~/.saves" t)))
 
 ; Enable server on startup
 (server-start)
@@ -58,7 +63,7 @@ There are two things you can do about this warning:
 (setq inhibit-startup-screen t)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
-(set-frame-font "Hack-13")
+(set-frame-font "Hack-15")
 (ido-mode 1)
 
 (setq visible-bell nil)
@@ -101,6 +106,8 @@ There are two things you can do about this warning:
 
 (eval-after-load "dired" '(progn
   (define-key dired-mode-map (kbd "o") 'find-file-ace-window) ))
+;;(define-key dired-mode-map "o" 'find-file-ace-window)
+
 
 ;; Configure dired mode on darwin - ls doesn't support --dired on OSx
 (when (string= system-type "darwin")       
@@ -108,6 +115,9 @@ There are two things you can do about this warning:
 
 ;; Increase threshold as lsp-mode suffers otherwise
 (setq gc-cons-threshold 100000000)
+
+;; Increase depth for lspmode, seems an issue with some large projects
+(setq max-lisp-eval-depth 10000)
 
 ;; Increase for lsp mode as some language servers send large responsees
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
@@ -154,7 +164,7 @@ There are two things you can do about this warning:
 ;; Major mode for go - required for highlighting, indentation etc
 (use-package go-mode)
 ;; Hooks for go mode
-;; !!! NOTE !!! For this to work need to run: go install golang.org/x/tools/gopls@latest
+;; NOTE: For this to work need to run: go install golang.org/x/tools/gopls@latest
 ;; And ensure that $PATH has $GOPATH set in it.
 ;; Major mode for go - required for highlighting, indentation etc
 ;; Start LSP Mode and YASnippet mode when in go-mode
@@ -171,6 +181,7 @@ There are two things you can do about this warning:
 (use-package terraform-mode)
 ;; Enables using C-c C-f to toggle visbility of a block
 (add-hook 'terraform-mode-hook #'outline-minor-mode)
+(setq terraform-format-on-save t)
 
 
 ;; ------ Configuration of startup layout -----
