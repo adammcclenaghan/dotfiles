@@ -15,7 +15,12 @@
 * Enlarge vertical size of window || C-x ^
 * Change horizontal size of window || C-x { or C-x }
 * Resize window by {number} times  || C-u {number} with C-x ^ or C-x { etc..
-* Swap two windows || M-x o m {number you want to swap the current window with)
+* Swap two windows || M-x o m {identifier}
+* Split window horizontal || M-o b
+* Split window vertical || M-o v
+* Delete window || M-o x
+* Move window || M-o M
+* Ace window help || M-o ?
 
 ** General code nav
 * Jump to function def || M-.
@@ -48,7 +53,7 @@
 ** Magit
 --- Status window actions: C-x g
 * Git fetch || f a [Fetches all remotes]
-* Git pull || g F p  [pulls from push remote] OR  g F u [pulls from upstream]
+* Git pull || F p  [pulls from push remote] OR   F u [pulls from upstream]
 * Git merge origin/main || m m origin/main RET
 * commit & push ||  s (n times) -> c c -> C-c C-c -> P p
 * Push changes to branch || P p
@@ -63,3 +68,16 @@
 ** Terraform mode
 * C-c C-f || Close/open a block
 
+** Debug with dap
+   ("C-c d b" . dap-breakpoint-toggle)
+   ("C-c d r" . dap-debug-restart)
+   ("C-c d l" . dap-debug-last)
+   ("C-c d d" . dap-debug)
+   ("C-c d u" . dap-ui-locals)
+   ("C-c d c" . dap-continue)
+   ("C-c d n" . dap-next)
+   ("C-c d i" . dap-step-in)
+   ("C-c d o" . dap-step-out)
+   ("C-c d q" . dap-disconnect)
+   ("C-c d C-b" . dap-ui-breakpoints)
+   ("C-c d f" . dap-breakpoint-condition)
