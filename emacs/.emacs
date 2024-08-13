@@ -90,7 +90,12 @@ There are two things you can do about this warning:
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 ; This is a nice package for switching around windows. When >2 windows it lets you pick a window with a key specifier.
-(use-package ace-window)
+(use-package ace-window
+  :config
+    :custom
+    (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l) "Designate windows by home row keys, not numbers.")
+    (aw-dispatch-always t) ; Ensure that we always use ace-window, even when < 3 windows
+)
 (global-set-key (kbd "M-o") 'ace-window)
 
 ; Allow selecting a window to open file in when opening with dired mode
@@ -158,6 +163,28 @@ There are two things you can do about this warning:
 (use-package helm-projectile)
 (helm-projectile-on)
 
+;; DAP for debugging in programming modes
+(use-package dap-mode
+    :bind
+  (:map dap-mode-map
+   ("C-c d b" . dap-breakpoint-toggle)
+   ("C-c d r" . dap-debug-restart)
+   ("C-c d l" . dap-debug-last)
+   ("C-c d d" . dap-debug)
+   ("C-c d u" . dap-ui-locals)
+   ("C-c d c" . dap-continue)
+   ("C-c d n" . dap-next)
+   ("C-c d i" . dap-step-in)
+   ("C-c d o" . dap-step-out)
+   ("C-c d q" . dap-disconnect)
+   ("C-c d C-b" . dap-ui-breakpoints)
+   ("C-c d f" . dap-breakpoint-condition)
+  )
+)
+
+; Setup some default features
+(setq dap-auto-configure-features '(sessions locals controls tooltip))
+
 ;; ----- Configuration for GO -----
 ;; Major mode for go - required for highlighting, indentation etc
 (use-package go-mode)
@@ -174,6 +201,8 @@ There are two things you can do about this warning:
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
+;; Delve debugger for GO, requires some configuration, see dap mode docs: https://emacs-lsp.github.io/dap-mode/page/configuration/#go
+(require 'dap-dlv-go) ; Require the submode for go
 
 ;; ----- Configuration for Terraform -----
 (use-package terraform-mode)
