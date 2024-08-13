@@ -97,6 +97,10 @@ There are two things you can do about this warning:
     (aw-dispatch-always t) ; Ensure that we always use ace-window, even when < 3 windows
 )
 (global-set-key (kbd "M-o") 'ace-window)
+; Allow ace-window to navigate to treemacs window (used by dap debug for example)
+(with-eval-after-load 'ace-window
+  (with-eval-after-load 'treemacs
+    (setq aw-ignored-buffers (delq 'treemacs-mode aw-ignored-buffers))))
 
 ; Allow selecting a window to open file in when opening with dired mode
 (defun find-file-ace-window ()
@@ -176,6 +180,7 @@ There are two things you can do about this warning:
    ("C-c d n" . dap-next)
    ("C-c d i" . dap-step-in)
    ("C-c d o" . dap-step-out)
+   ("C-c d e" . dap-eval)
    ("C-c d q" . dap-disconnect)
    ("C-c d C-b" . dap-ui-breakpoints)
    ("C-c d f" . dap-breakpoint-condition)
