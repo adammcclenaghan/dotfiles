@@ -45,7 +45,7 @@ There are two things you can do about this warning:
   version-control t      ; Use version numbers on backups
   delete-old-versions t  ; Automatically delete excess backups
   kept-new-versions 20   ; how many of the newest versions to keep
-  kept-old-versions 5    ; and how many of the old3
+  kept-old-versions 5    ; and how many of the old
   )
 
 ;; Disable lockfiles
@@ -106,8 +106,6 @@ There are two things you can do about this warning:
 
 (eval-after-load "dired" '(progn
   (define-key dired-mode-map (kbd "o") 'find-file-ace-window) ))
-;;(define-key dired-mode-map "o" 'find-file-ace-window)
-
 
 ;; Configure dired mode on darwin - ls doesn't support --dired on OSx
 (when (string= system-type "darwin")       
@@ -183,6 +181,8 @@ There are two things you can do about this warning:
 (add-hook 'terraform-mode-hook #'outline-minor-mode)
 (setq terraform-format-on-save t)
 
+;; ------ Configuration of protobuf mode -----
+(use-package protobuf-mode)
 
 ;; ------ Configuration of startup layout -----
 ;; layout definition
