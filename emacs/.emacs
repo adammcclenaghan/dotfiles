@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
- (load-theme 'solarized-light t)
+ (load-theme 'hc-zenburn t)
 
 ;; --- General emacs configuration ---
 
