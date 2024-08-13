@@ -31,6 +31,9 @@
 * Ag search in project || C-c p s s
 * File search in project || C-c p f
 * Switch to another project || C-c p p
+* Search for tests || C-c p T
+* Compile || C-c p c
+* Run tests || C-c p P
 
 ** Golang
 * Jump to next/previous function (Hold ctrl and meta same time) || C-M-e or C-M-a 
