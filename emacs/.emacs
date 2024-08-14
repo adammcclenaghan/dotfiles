@@ -25,7 +25,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
+   '(highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -136,7 +136,30 @@ There are two things you can do about this warning:
 
 ;; ----- Configuration used in most programming language files -----
 ;; Language server protocol support
-(use-package lsp-mode)
+(use-package lsp-mode
+  :bind ("C-c l g i" . lsp-ui-peek-find-implementation))
+; Enable it for all programming modes
+(add-hook 'prog-mode-hook 'lsp-deferred)
+;; Less chatty for unsupported modes
+(setq lsp-warn-no-matched-clients nil)
+
+;; Flycheck, integrates into lsp-mode to provide syntax checking etc.
+(use-package flycheck
+  :ensure t
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+
+;; Highlight the variable under point automatically
+;; Enable highlight-symbol mode and navigation mode in programming modes
+(add-hook 'prog-mode-hook #'highlight-symbol-mode)
+(add-hook 'prog-mode-hook #'highlight-symbol-nav-mode)
+;; Customize settings
+(setq highlight-symbol-idle-delay 0.6
+      highlight-symbol-on-navigation-p t)
+
+;; Custom keybindings
+(define-key highlight-symbol-mode-map (kbd "M-n") 'highlight-symbol-next)
+(define-key highlight-symbol-mode-map (kbd "M-p") 'highlight-symbol-prev)
 
 ;; UI packages for lsp mode
 (use-package lsp-ui)
@@ -144,6 +167,9 @@ There are two things you can do about this warning:
 (setq lsp-ui-doc-use-webkit t)  ; Show docs in a webkit popover
 (setq lsp-ui-doc-position 'at-point) ; Show the webkit popover for docs on the cursor point
 (setq lsp-ui-doc-delay '1) ; Delay showing the popover for docs for a few seconds
+(setq lsp-ui-sideline-show-diagnostics nil) ; Show errors in sideline
+(setq lsp-ui-peek-fontify 'always)
+(setq lsp-ui-peek-highlight 'highlight)
 ;; Remap xref-find-definitions to a nicer code navigation with lsp-ui
 (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions) 
 (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
@@ -217,22 +243,3 @@ There are two things you can do about this warning:
 
 ;; ------ Configuration of protobuf mode -----
 (use-package protobuf-mode)
-
-;; ------ Configuration of startup layout -----
-;; layout definition
-(defun my-startup-layout ()
- (interactive)
- (delete-other-windows)
- (split-window-horizontally) ;; -> |
- (next-multiframe-window)
- (find-file "~/.emacs")
- (split-window-vertically) ;;  -> --
- (next-multiframe-window)
- (dired "~")
- (next-multiframe-window)
- (find-file "~/.emacs")
- (enlarge-window-horizontally 5)
-)
-
-;; execute the layout
-(my-startup-layout )
