@@ -87,3 +87,5 @@
    ("C-c d q" . dap-disconnect)
    ("C-c d C-b" . dap-ui-breakpoints)
    ("C-c d f" . dap-breakpoint-condition)
+
+* Edit config file (eg add args) ||    M-x dap-debug-edit-template

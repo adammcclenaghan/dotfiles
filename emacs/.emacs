@@ -31,6 +31,7 @@ There are two things you can do about this warning:
  '(package-selected-packages
    '(rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package)))
 (custom-set-faces
+  '(ahs-plugin-default-face ((t (:background nil :foreground nil)))) ; The default of a bright orange highlight is jarring with zenburn
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
@@ -159,8 +160,7 @@ There are two things you can do about this warning:
   :bind (:map auto-highlight-symbol-mode-map
               ("M-p" . ahs-backward)
               ("M-n" . ahs-forward)))
-
-(global-auto-highlight-symbol-mode)
+(global-auto-highlight-symbol-mode t)
 
 ;; UI packages for lsp mode
 (use-package lsp-ui)
@@ -232,6 +232,7 @@ There are two things you can do about this warning:
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+(add-hook 'go-mode-hook #'auto-highlight-symbol-mode) ; Seems to be a bug where global doesn't work: https://github.com/elp-revive/auto-highlight-symbol/issues/22
 
 ;; Delve debugger for GO, requires some configuration, see dap mode docs: https://emacs-lsp.github.io/dap-mode/page/configuration/#go
 (require 'dap-dlv-go) ; Require the submode for go
