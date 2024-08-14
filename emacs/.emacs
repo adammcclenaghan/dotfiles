@@ -25,7 +25,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
+   '(highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -37,7 +37,7 @@ There are two things you can do about this warning:
 ;; --- General emacs configuration ---
 
 (package-initialize)
-
+(package-refresh-contents)
 ;; Prevent backup ~ files from being stored alongside originals. Keeps directories tidy.
 ;; Thanks to : https://stackoverflow.com/questions/2680389/how-to-remove-all-files-ending-with-made-by-emacs/25692389
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
