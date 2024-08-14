@@ -151,15 +151,12 @@ There are two things you can do about this warning:
 
 ;; Highlight the variable under point automatically
 ;; Enable highlight-symbol mode and navigation mode in programming modes
-(add-hook 'prog-mode-hook #'highlight-symbol-mode)
-(add-hook 'prog-mode-hook #'highlight-symbol-nav-mode)
-;; Customize settings
-(setq highlight-symbol-idle-delay 0.6
-      highlight-symbol-on-navigation-p t)
+(use-package auto-highlight-symbol
+  :bind (:map auto-highlight-symbol-mode-map
+              ("M-p" . ahs-backward)
+              ("M-n" . ahs-forward)))
 
-;; Custom keybindings
-(define-key highlight-symbol-mode-map (kbd "M-n") 'highlight-symbol-next)
-(define-key highlight-symbol-mode-map (kbd "M-p") 'highlight-symbol-prev)
+(global-auto-highlight-symbol-mode)
 
 ;; UI packages for lsp mode
 (use-package lsp-ui)
@@ -243,3 +240,7 @@ There are two things you can do about this warning:
 
 ;; ------ Configuration of protobuf mode -----
 (use-package protobuf-mode)
+
+;; ------ Configuration of rust mode -----
+;; If using make for rust projects use: (setq rustic-compile-command "make")
+(use-package rustic) ; https://github.com/brotzeit/rustic
