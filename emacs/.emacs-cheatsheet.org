@@ -36,6 +36,7 @@
 * Flycheck previous error || C-c ! p
 * Jump to next occurence of highlighted work || M-n
 * Jump to previous occurence of highlighted work || M-p
+* Set focus on doc webkit, to allow scrolling || C-c f (q to exit)
 
 ** Project navigation with projectile
 * Grep search in project || C-c p s g
