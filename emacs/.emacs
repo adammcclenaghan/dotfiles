@@ -25,7 +25,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package solarized-theme)))
+   '(helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -37,7 +37,7 @@ There are two things you can do about this warning:
 ;; --- General emacs configuration ---
 
 (package-initialize)
-
+(package-refresh-contents)
 ;; Prevent backup ~ files from being stored alongside originals. Keeps directories tidy.
 ;; Thanks to : https://stackoverflow.com/questions/2680389/how-to-remove-all-files-ending-with-made-by-emacs/25692389
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -217,6 +217,11 @@ There are two things you can do about this warning:
 
 ;; ------ Configuration of protobuf mode -----
 (use-package protobuf-mode)
+
+;; ------ Configuration of rust mode -----
+(use-package rustic) ; https://github.com/brotzeit/rustic
+;; If using make for rust projects use: (setq rustic-compile-command "make")
+
 
 ;; ------ Configuration of startup layout -----
 ;; layout definition
