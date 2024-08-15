@@ -7,6 +7,7 @@
 * Run shell command || M-!
 * Run shell window || M-x shell
 * Find command for key comba || C-h k
+* Center window on point || C-l (Hit 3 times in a row to move around top/center/bottom)
 
 ** Window management
 * Delete currently selected window pane || C-x 0

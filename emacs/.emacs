@@ -41,6 +41,13 @@ There are two things you can do about this warning:
 
 ;; --- General emacs configuration ---
 
+(setq scroll-margin 3
+      scroll-conservatively 101
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01
+      scroll-preserve-screen-position t
+      auto-window-vscroll nil)
+
 (package-initialize)
 (package-refresh-contents)
 ;; Prevent backup ~ files from being stored alongside originals. Keeps directories tidy.
