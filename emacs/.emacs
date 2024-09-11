@@ -261,3 +261,12 @@ There are two things you can do about this warning:
 (use-package rustic)
 (setq rust-mode-treesitter-derive nil) ; This causes errors on emacs 29+ and I don't have time to investigate right now.
 (add-hook 'rustic-hook #'auto-highlight-symbol-mode)
+
+;; ------ Configuration of python mode -----
+(use-package pyenv-mode)
+;; Requires pyright to be installed. To install it globally: npm install -g pyright
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp-deferred))))
