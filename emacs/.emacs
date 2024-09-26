@@ -178,8 +178,13 @@ There are two things you can do about this warning:
 (setq lsp-ui-sideline-show-diagnostics nil) ; Show errors in sideline
 (setq lsp-ui-peek-fontify 'always)
 (setq lsp-ui-peek-highlight 'highlight)
+
 (add-hook 'lsp-ui-doc-mode-hook #'lsp-ui-doc-frame-mode) ; Allows us to focus the webkit popover with keybind
 (define-key lsp-ui-doc-frame-mode-map (kbd "C-c f") 'lsp-ui-doc-focus-frame) ; Bind focus to C-c f
+(with-eval-after-load 'lsp-ui-doc
+  (define-key lsp-ui-doc-frame-mode-map [?q] nil)  ; Unbind 'q'
+  (define-key lsp-ui-doc-frame-mode-map [?q] 'self-insert-command))  ; Rebind 'q' to self-insert
+
 ;; Remap xref-find-definitions to a nicer code navigation with lsp-ui
 (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions) 
 (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
