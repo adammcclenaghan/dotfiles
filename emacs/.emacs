@@ -178,9 +178,12 @@ There are two things you can do about this warning:
 (setq lsp-ui-sideline-show-diagnostics nil) ; Show errors in sideline
 (setq lsp-ui-peek-fontify 'always)
 (setq lsp-ui-peek-highlight 'highlight)
+;;(setq lsp-ui-peek-show-directory nil) ; Disables directory on peek. Sometimes nice to enable in deeply nested projects...
+(setq lsp-ui-peek-list-width '100) ; Make the right peek list a little wider
 
 (add-hook 'lsp-ui-doc-mode-hook #'lsp-ui-doc-frame-mode) ; Allows us to focus the webkit popover with keybind
 (define-key lsp-ui-doc-frame-mode-map (kbd "C-c f") 'lsp-ui-doc-focus-frame) ; Bind focus to C-c f
+;; ... lsp-ui-doc-focus was always stealing the q key in lsp enabled files :) 
 (with-eval-after-load 'lsp-ui-doc
   (define-key lsp-ui-doc-frame-mode-map [?q] nil)  ; Unbind 'q'
   (define-key lsp-ui-doc-frame-mode-map [?q] 'self-insert-command))  ; Rebind 'q' to self-insert
@@ -205,8 +208,17 @@ There are two things you can do about this warning:
 (projectile-mode +1)
 ; Start projectile commands with C-c p
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+; Use helm projectile
 (use-package helm-projectile)
 (helm-projectile-on)
+;; I would expect this to work if I call C-u C-c pp instead of C-c pp , however it doesn't, so just override it...
+(setq projectile-switch-project-action 'projectile-commander)
+
+; Make sure recentf mode works, for recent file switching with C-c p e
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)  ;; Modify this as needed to set the number of items
+(setq recentf-auto-cleanup 'never) ;; Keep recent files around forever and ever and ever and ever and....
+
 
 ;; DAP for debugging in programming modes
 (use-package dap-mode
