@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
+   '(lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -155,11 +155,11 @@ There are two things you can do about this warning:
 
 ;; ----- Configuration used in most programming language files -----
 ;; Language server protocol support
-(setq lsp-use-plists t)
-(setq toggle-debug-on-error t)
-(setq lsp-log-io t)
 (use-package lsp-mode
-  :bind ("C-c l g i" . lsp-ui-peek-find-implementation))
+  :bind ("C-c l g i" . lsp-ui-peek-find-implementation)
+  :config
+  (setq lsp-use-plists t)
+  (setq lsp-request-timeout 100)) ;; default is 10 sec
 ; Enable it for all programming modes
 (add-hook 'prog-mode-hook 'lsp-deferred)
 ;; Less chatty for unsupported modes
