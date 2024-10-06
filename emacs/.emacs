@@ -1,4 +1,7 @@
-; Enable melpa
+;; https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
+(setenv "LSP_USE_PLISTS" "true")
+
+;; Enable melpa
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
@@ -29,14 +32,16 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp-ui lsp use-package)))
+   '(rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
 (custom-set-faces
-  '(ahs-plugin-default-face ((t (:background nil :foreground nil)))) ; The default of a bright orange highlight is jarring with zenburn
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(ahs-plugin-default-face ((t (:background nil :foreground nil)))))
+(unless (package-installed-p 'hc-zenburn-theme)
+  (package-refresh-contents)
+  (package-install 'hc-zenburn-theme))
  (load-theme 'hc-zenburn t)
 
 ;; --- General emacs configuration ---
@@ -144,16 +149,54 @@ There are two things you can do about this warning:
 ;; Make sure env in emacs looks the same as shell. OS x sets different env when opened in shell vs UI. Annoying.
 ;; https://github.com/purcell/exec-path-from-shell
 (use-package exec-path-from-shell)
+(dolist (var '("LSP_USE_PLISTS"))
+  (add-to-list 'exec-path-from-shell-variables var))
 (exec-path-from-shell-initialize)
 
 ;; ----- Configuration used in most programming language files -----
 ;; Language server protocol support
+(setq lsp-use-plists t)
+(setq toggle-debug-on-error t)
+(setq lsp-log-io t)
 (use-package lsp-mode
   :bind ("C-c l g i" . lsp-ui-peek-find-implementation))
 ; Enable it for all programming modes
 (add-hook 'prog-mode-hook 'lsp-deferred)
 ;; Less chatty for unsupported modes
 (setq lsp-warn-no-matched-clients nil)
+
+
+;; Configure lsp-booster to make LSP mode faster
+(defun lsp-booster--advice-json-parse (old-fn &rest args)
+  "Try to parse bytecode instead of json."
+  (or
+   (when (equal (following-char) ?#)
+     (let ((bytecode (read (current-buffer))))
+       (when (byte-code-function-p bytecode)
+         (funcall bytecode))))
+   (apply old-fn args)))
+(advice-add (if (progn (require 'json)
+                       (fboundp 'json-parse-buffer))
+                'json-parse-buffer
+              'json-read)
+            :around
+            #'lsp-booster--advice-json-parse)
+
+(defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+  "Prepend emacs-lsp-booster command to lsp CMD."
+  (let ((orig-result (funcall old-fn cmd test?)))
+    (if (and (not test?)                             ;; for check lsp-server-present?
+             (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+             lsp-use-plists
+             (not (functionp 'json-rpc-connection))  ;; native json-rpc
+             (executable-find "emacs-lsp-booster"))
+        (progn
+          (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+            (setcar orig-result command-from-exec-path))
+          (message "Using emacs-lsp-booster for %s!" orig-result)
+          (cons "emacs-lsp-booster" orig-result))
+      orig-result)))
+(advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 
 ;; Flycheck, integrates into lsp-mode to provide syntax checking etc.
 (use-package flycheck
