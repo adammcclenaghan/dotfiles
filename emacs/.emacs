@@ -141,7 +141,7 @@ There are two things you can do about this warning:
 (setq gc-cons-threshold 100000000)
 
 ;; Increase depth for lspmode, seems an issue with some large projects
-(setq max-lisp-eval-depth 10000)
+(setq max-lisp-eval-depth 20000)
 
 ;; Increase for lsp mode as some language servers send large responsees
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
@@ -154,17 +154,20 @@ There are two things you can do about this warning:
 (exec-path-from-shell-initialize)
 
 ;; ----- Configuration used in most programming language files -----
+;; Syft repo's test fixtures have symlink loops, exceeds max-lisp-eval-depth when not ignored, looks like a tight loop.
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "test-fixtures"))
+
 ;; Language server protocol support
 (use-package lsp-mode
   :bind ("C-c l g i" . lsp-ui-peek-find-implementation)
   :config
   (setq lsp-use-plists t)
-  (setq lsp-request-timeout 100)) ;; default is 10 sec
+  (setq lsp-response-timeout 10)) ;; Default 10 sec - increase if having issues.
 ; Enable it for all programming modes
 (add-hook 'prog-mode-hook 'lsp-deferred)
 ;; Less chatty for unsupported modes
 (setq lsp-warn-no-matched-clients nil)
-
 
 ;; Configure lsp-booster to make LSP mode faster
 (defun lsp-booster--advice-json-parse (old-fn &rest args)
