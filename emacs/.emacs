@@ -245,6 +245,8 @@ There are two things you can do about this warning:
 
 ;; Template expansion, see https://emacsconf.org/2019/talks/31/ - use "M-x yas-describle-tables" to see available snippets in the buffer's mode. Essentially, adds handy auto complete expansion for code
 (use-package yasnippet)
+;; Bundled snippets from https://github.com/AndreaCrotti/yasnippet-snippets
+(use-package yasnippet-snippets)
 
 ;; Git in emacs
 (use-package magit)
