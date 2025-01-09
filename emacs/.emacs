@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(dap-cpptools which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
+   '(which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -159,8 +159,8 @@ There are two things you can do about this warning:
 ;; Syft repo's test fixtures have symlink loops, exceeds max-lisp-eval-depth when not ignored, looks like a tight loop.
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "test-fixtures")
-   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-  (use-package dap-cpptools)
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+  (require 'dap-cpptools)
   (yas-global-mode))
 
 ;; Language server protocol support
