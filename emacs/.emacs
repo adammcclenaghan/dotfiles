@@ -151,7 +151,9 @@ There are two things you can do about this warning:
 (use-package exec-path-from-shell)
 (dolist (var '("LSP_USE_PLISTS"))
   (add-to-list 'exec-path-from-shell-variables var))
-(exec-path-from-shell-initialize)
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 ;; ----- Configuration used in most programming language files -----
 ;; Syft repo's test fixtures have symlink loops, exceeds max-lisp-eval-depth when not ignored, looks like a tight loop.
@@ -185,6 +187,7 @@ There are two things you can do about this warning:
             :around
             #'lsp-booster--advice-json-parse)
 
+;; Note: PRE-REQ: https://github.com/blahgeek/emacs-lsp-booster
 (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
   "Prepend emacs-lsp-booster command to lsp CMD."
   (let ((orig-result (funcall old-fn cmd test?)))
