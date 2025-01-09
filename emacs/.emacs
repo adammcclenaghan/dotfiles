@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
+   '(dap-cpptools which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -102,6 +102,7 @@ There are two things you can do about this warning:
 ;; To use without internet connection, download all of this into ~/rfc : https://www.rfc-editor.org/retrieve/bulk
 (use-package rfc-mode)
 
+(use-package which-key)
 ; ----- Packages and configurations used for general code editing -----
 ; Enable line numbers in all programming modes
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -137,9 +138,6 @@ There are two things you can do about this warning:
 (when (string= system-type "darwin")       
   (setq dired-use-ls-dired nil))
 
-;; Increase threshold as lsp-mode suffers otherwise
-(setq gc-cons-threshold 100000000)
-
 ;; Increase depth for lspmode, seems an issue with some large projects
 (setq max-lisp-eval-depth 20000)
 
@@ -156,9 +154,14 @@ There are two things you can do about this warning:
   (exec-path-from-shell-initialize))
 
 ;; ----- Configuration used in most programming language files -----
+;; https://karthinks.com/software/avy-can-do-anything/
+(use-package avy)
 ;; Syft repo's test fixtures have symlink loops, exceeds max-lisp-eval-depth when not ignored, looks like a tight loop.
 (with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "test-fixtures"))
+  (add-to-list 'lsp-file-watch-ignored-directories "test-fixtures")
+   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+  (use-package dap-cpptools)
+  (yas-global-mode))
 
 ;; Language server protocol support
 (use-package lsp-mode
@@ -170,6 +173,11 @@ There are two things you can do about this warning:
 (add-hook 'prog-mode-hook 'lsp-deferred)
 ;; Less chatty for unsupported modes
 (setq lsp-warn-no-matched-clients nil)
+;; Some optimisations
+(setq gc-cons-threshold (* 100 1024 1024)
+      treemacs-space-between-root-nodes nil
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
 
 ;; Configure lsp-booster to make LSP mode faster
 (defun lsp-booster--advice-json-parse (old-fn &rest args)
@@ -338,3 +346,11 @@ There are two things you can do about this warning:
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp-deferred))))
+
+;; NOTE: Pre-req: On unix https://github.com/rizsotto/Bear or windows https://github.com/nickdiego/compiledb to generate
+;; compile_commands.json so that clangd can understand 
+;; Also, must run "compiledb -n make" in C++ project root to generate this json file
+;; See https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/ for more info
+;; ------ Configuration for C/C++ -----
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
