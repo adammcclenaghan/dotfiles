@@ -103,6 +103,8 @@ There are two things you can do about this warning:
 (use-package rfc-mode)
 
 (use-package which-key)
+(which-key-mode)
+
 ; ----- Packages and configurations used for general code editing -----
 ; Enable line numbers in all programming modes
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -156,12 +158,8 @@ There are two things you can do about this warning:
 ;; ----- Configuration used in most programming language files -----
 ;; https://karthinks.com/software/avy-can-do-anything/
 (use-package avy)
-;; Syft repo's test fixtures have symlink loops, exceeds max-lisp-eval-depth when not ignored, looks like a tight loop.
-(with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "test-fixtures")
-  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-  (require 'dap-cpptools)
-  (yas-global-mode))
+(avy-setup-default)
+(global-set-key (kbd "C-c C-j") 'avy-resume)
 
 ;; Language server protocol support
 (use-package lsp-mode
@@ -171,13 +169,18 @@ There are two things you can do about this warning:
   (setq lsp-response-timeout 10)) ;; Default 10 sec - increase if having issues.
 ; Enable it for all programming modes
 (add-hook 'prog-mode-hook 'lsp-deferred)
+
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "test-fixtures") ;; Syft repo's test fixtures have symlink loops, exceeds max-lisp-eval-depth when not ignored, looks like a tight loop.
+  (require 'dap-cpptools)
+  (yas-global-mode))
+
 ;; Less chatty for unsupported modes
 (setq lsp-warn-no-matched-clients nil)
 ;; Some optimisations
 (setq gc-cons-threshold (* 100 1024 1024)
       treemacs-space-between-root-nodes nil
       lsp-idle-delay 0.1)  ;; clangd is fast
-
 
 ;; Configure lsp-booster to make LSP mode faster
 (defun lsp-booster--advice-json-parse (old-fn &rest args)
