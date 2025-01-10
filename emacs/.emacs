@@ -172,8 +172,7 @@ There are two things you can do about this warning:
 
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "test-fixtures") ;; Syft repo's test fixtures have symlink loops, exceeds max-lisp-eval-depth when not ignored, looks like a tight loop.
-  (require 'dap-cpptools)
-  (yas-global-mode))
+  (require 'dap-cpptools))
 
 ;; Less chatty for unsupported modes
 (setq lsp-warn-no-matched-clients nil)
@@ -259,6 +258,7 @@ There are two things you can do about this warning:
 
 ;; Template expansion, see https://emacsconf.org/2019/talks/31/ - use "M-x yas-describle-tables" to see available snippets in the buffer's mode. Essentially, adds handy auto complete expansion for code
 (use-package yasnippet)
+(yas-global-mode 1)
 ;; Bundled snippets from https://github.com/AndreaCrotti/yasnippet-snippets
 (use-package yasnippet-snippets)
 
