@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
+   '(helm-config helm-bookmarks helm-imenu helm-occur helm-buffers helm-files helm-command helm-mode helm-lsp treemacs-projectile which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -89,9 +89,6 @@ There are two things you can do about this warning:
 ;; I like my cursor to blink forever
 (setq blink-cursor-blinks 0)
 
-;; Incremental completion
-(package-install 'helm)
-(require 'helm)
 ;; Get use-package, nice wrapper around require
 (package-install 'use-package)
 (require 'use-package) ; Ensure that use-package always tries to install if the package is missing
@@ -99,11 +96,45 @@ There are two things you can do about this warning:
 
 (winner-mode 1)
 
+;; Helm
+(use-package helm
+  :ensure t
+  :bind
+  (("M-x" . helm-M-x)
+   ("C-x C-f" . helm-find-files)
+   ("C-x C-b" . helm-buffers-list)
+   ("M-s o" . helm-occur)
+   ("M-s i" . helm-imenu)
+   ("M-s I" . helm-imenu-in-all-buffers)
+   ("M-s m" . helm-mini)
+   ("M-s b" . helm-bookmarks))
+  :config
+  (require 'helm-autoloads)
+  (setq helm-split-window-inside-p t)
+  (setq helm-use-frame-when-more-than-two-windows nil)
+  (setq imenu-max-item-length 120)
+  (setq helm-buffer-max-length nil)
+  (helm-mode 1)
+  (helm-autoresize-mode 1)) ;; TODO: Not sure I want this 
+
 ;; To use without internet connection, download all of this into ~/rfc : https://www.rfc-editor.org/retrieve/bulk
 (use-package rfc-mode)
 
 (use-package which-key)
 (which-key-mode)
+
+(use-package helm-lsp
+  :ensure t
+  :after (helm lsp-mode lsp-ui)  ;; Make sure helm and lsp-mode are loaded before helm-lsp
+  :bind (("C-c h w s" . helm-lsp-workspace-symbol)
+         ("C-c h g s" . helm-lsp-global-workspace-symbol)
+         ("C-c h s" . helm-lsp-switch-project)
+         ("C-c h d" . helm-lsp-diagnostics)
+	  (:map lsp-mode-map
+		([remap xref-find-apropos] . helm-lsp-workspace-symbol))
+	)
+  :config
+  (setq helm-lsp-prefix-key "C-c h")) ;; Optional: Set a global prefix key for helm-lsp commands
 
 ; ----- Packages and configurations used for general code editing -----
 ; Enable line numbers in all programming modes
@@ -280,14 +311,25 @@ There are two things you can do about this warning:
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)  ;; Modify this as needed to set the number of items
 (setq recentf-auto-cleanup 'never) ;; Keep recent files around forever and ever and ever and ever and....
+;; treemacs
+(use-package treemacs
+  :ensure t
+)
 ;; Integrate projectile with treemacs
 (use-package treemacs-projectile
   :after (treemacs projectile)
   :ensure t)
-;; Load projectile projects into treemacs
-(dolist (project (projectile-relevant-known-projects))
-  (treemacs-add-project-to-workspace project))
-(global-set-key (kbd "C-c t p") #'treemacs-projectile)
+
+(treemacs-start-on-boot)
+(use-package lsp-treemacs
+  :ensure t
+  :after lsp-mode  ; Make sure lsp-mode is loaded before lsp-treemacs
+  :config
+  (lsp-treemacs-sync-mode 1))  ;; Enable the lsp-treemacs-symbols view
+; start lsp-treemacs-sybmols on project boot
+(add-hook 'lsp-mode-hook 'lsp-treemacs-symbols)
+(add-hook 'lsp-mode-hook #'lsp-treemacs-sync-mode)
+
 
 ;; DAP for debugging in programming modes
 (use-package dap-mode
@@ -364,3 +406,4 @@ There are two things you can do about this warning:
 ;; ------ Configuration for C/C++ -----
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
+
