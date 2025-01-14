@@ -280,7 +280,14 @@ There are two things you can do about this warning:
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)  ;; Modify this as needed to set the number of items
 (setq recentf-auto-cleanup 'never) ;; Keep recent files around forever and ever and ever and ever and....
-
+;; Integrate projectile with treemacs
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+;; Load projectile projects into treemacs
+(dolist (project (projectile-relevant-known-projects))
+  (treemacs-add-project-to-workspace project))
+(global-set-key (kbd "C-c t p") #'treemacs-projectile)
 
 ;; DAP for debugging in programming modes
 (use-package dap-mode
