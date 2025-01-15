@@ -191,6 +191,16 @@ There are two things you can do about this warning:
 (use-package avy)
 (avy-setup-default)
 (global-set-key (kbd "C-c C-j") 'avy-resume)
+(global-set-key (kbd "M-g f") 'avy-goto-line)
+(global-set-key (kbd "M-j") 'avy-goto-char-timer) ;; Avy jump
+;; avy jump within helm search windows
+(use-package ace-jump-helm-line
+  :after (helm)
+  :ensure t
+)  
+(eval-after-load "helm"
+'(define-key helm-map (kbd "M-j") 'ace-jump-helm-line))
+
 
 ;; Language server protocol support
 (use-package lsp-mode
@@ -326,10 +336,6 @@ There are two things you can do about this warning:
   :after lsp-mode  ; Make sure lsp-mode is loaded before lsp-treemacs
   :config
   (lsp-treemacs-sync-mode 1))  ;; Enable the lsp-treemacs-symbols view
-; start lsp-treemacs-sybmols on project boot
-(add-hook 'lsp-mode-hook 'lsp-treemacs-symbols)
-(add-hook 'lsp-mode-hook #'lsp-treemacs-sync-mode)
-
 
 ;; DAP for debugging in programming modes
 (use-package dap-mode
