@@ -96,6 +96,9 @@ There are two things you can do about this warning:
 
 (winner-mode 1)
 
+;; Rebind xref-go-forward to something more ergonomic for me
+(global-set-key (kbd "M-/") 'xref-go-forward)
+
 ;; Helm
 (use-package helm
   :ensure t
