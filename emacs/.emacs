@@ -129,8 +129,8 @@ There are two things you can do about this warning:
 (use-package helm-lsp
   :ensure t
   :after (helm lsp-mode lsp-ui)  ;; Make sure helm and lsp-mode are loaded before helm-lsp
-  :bind (("C-c h w s" . helm-lsp-workspace-symbol)
-         ("C-c h g s" . helm-lsp-global-workspace-symbol)
+  :bind (("C-c h f" . helm-lsp-workspace-symbol)
+         ("C-c h g f" . helm-lsp-global-workspace-symbol)
          ("C-c h s" . helm-lsp-switch-project)
          ("C-c h d" . helm-lsp-diagnostics)
 	  (:map lsp-mode-map
