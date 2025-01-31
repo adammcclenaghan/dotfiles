@@ -309,6 +309,13 @@ There are two things you can do about this warning:
 ;; Git in emacs
 (use-package magit)
 
+;; Github/Gitlab PRs/issues etc in emacs
+;; NOTE To setup: https://magit.vc/manual/forge.html#Initial-Setup
+(use-package forge
+  :after magit)
+(setq auth-sources '("~/.authinfo.gpg"))
+
+
 ;; Project navigation with projectile & helm
 (use-package projectile)
 (projectile-mode +1)
