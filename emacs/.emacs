@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm-config helm-bookmarks helm-imenu helm-occur helm-buffers helm-files helm-command helm-mode helm-lsp treemacs-projectile which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
+   '(dired-preview lsp-treemacs treemacs forge helm-config helm-bookmarks helm-imenu helm-occur helm-buffers helm-files helm-command helm-mode helm-lsp treemacs-projectile which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -207,6 +207,7 @@ There are two things you can do about this warning:
 
 ;; Language server protocol support
 (use-package lsp-mode
+  :after (dap-mode)
   :bind ("C-c l g i" . lsp-ui-peek-find-implementation)
   :config
   (setq lsp-use-plists t)
@@ -215,8 +216,7 @@ There are two things you can do about this warning:
 (add-hook 'prog-mode-hook 'lsp-deferred)
 
 (with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-file-watch-ignored-directories "test-fixtures") ;; Syft repo's test fixtures have symlink loops, exceeds max-lisp-eval-depth when not ignored, looks like a tight loop.
-  (require 'dap-cpptools))
+  (add-to-list 'lsp-file-watch-ignored-directories "test-fixtures")) ;; Syft repo's test fixtures have symlink loops, exceeds max-lisp-eval-depth when not ignored, looks like a tight loop.)
 
 ;; Less chatty for unsupported modes
 (setq lsp-warn-no-matched-clients nil)
@@ -347,6 +347,32 @@ There are two things you can do about this warning:
   :config
   (lsp-treemacs-sync-mode 1))  ;; Enable the lsp-treemacs-symbols view
 
+;; Preview files in dired
+(use-package dired-preview
+  :ensure t
+  ;; :hook (dired-mode . (lambda ()
+  ;;                       (when (string-match-p "Pictures" default-directory)
+  ;;                         (dired-preview-mode 1))))
+  :defer 1
+  :hook (after-init . dired-preview-global-mode)
+  :config
+  (setq dired-preview-max-size (* (expt 2 20) 10))
+  (setq dired-preview-delay 0.5)
+  (setq dired-preview-ignored-extensions-regexp
+        (concat "\\."
+                "\\(gz\\|"
+                "zst\\|"
+                "tar\\|"
+                "xz\\|"
+                "rar\\|"
+                "zip\\|"
+                "iso\\|"
+                "epub"
+                "\\)")))
+
+;; Enable for all dired buffers
+(dired-preview-global-mode 1)
+
 ;; DAP for debugging in programming modes
 (use-package dap-mode
     :bind
@@ -423,3 +449,5 @@ There are two things you can do about this warning:
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
 
+;; Force gpg to ask in minibuffer
+(setq epg-pinentry-mode 'loopback)
