@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(dired-preview lsp-treemacs treemacs forge helm-config helm-bookmarks helm-imenu helm-occur helm-buffers helm-files helm-command helm-mode helm-lsp treemacs-projectile which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
+   '(clang-format dired-preview lsp-treemacs treemacs forge helm-config helm-bookmarks helm-imenu helm-occur helm-buffers helm-files helm-command helm-mode helm-lsp treemacs-projectile which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -413,7 +413,7 @@ There are two things you can do about this warning:
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 (add-hook 'go-mode-hook #'auto-highlight-symbol-mode) ; Seems to be a bug where global doesn't work: https://github.com/elp-revive/auto-highlight-symbol/issues/22
 
-;; Delve debugger for GO, requires some configuration, see dap mode docs: https://emacs-lsp.github.io/dap-mode/page/configuration/#go
+;; Delve debugger for GO. NOTE requires some configuration, see dap mode docs: https://emacs-lsp.github.io/dap-mode/page/configuration/#go
 (require 'dap-dlv-go) ; Require the submode for go
 
 ;; ----- Configuration for Terraform -----
@@ -448,6 +448,11 @@ There are two things you can do about this warning:
 ;; ------ Configuration for C/C++ -----
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
+(use-package clang-format
+  :commands (clang-format-buffer clang-format-on-save-mode)
+  :hook (c-mode c++-mode)
+  :config
+  (clang-format-on-save-mode))
 
 ;; Force gpg to ask in minibuffer
 (setq epg-pinentry-mode 'loopback)
