@@ -448,6 +448,9 @@ There are two things you can do about this warning:
 ;; ------ Configuration for C/C++ -----
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
+;; NOTE: For this to work you need a .clang-format file in your project root.
+;; Can be created with a command like so:
+;; clang-format -style=google -dump-config > .clang-format
 (use-package clang-format
   :commands (clang-format-buffer clang-format-on-save-mode)
   :hook (c-mode c++-mode)
