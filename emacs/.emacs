@@ -32,7 +32,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(clang-format dired-preview lsp-treemacs treemacs forge helm-config helm-bookmarks helm-imenu helm-occur helm-buffers helm-files helm-command helm-mode helm-lsp treemacs-projectile which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
+   '(treesit-auto clang-format dired-preview lsp-treemacs treemacs forge helm-config helm-bookmarks helm-imenu helm-occur helm-buffers helm-files helm-command helm-mode helm-lsp treemacs-projectile which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -98,6 +98,14 @@ There are two things you can do about this warning:
 
 ;; Rebind xref-go-forward to something more ergonomic for me
 (global-set-key (kbd "M-/") 'xref-go-forward)
+
+;; Treesit 
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 ;; Helm
 (use-package helm
