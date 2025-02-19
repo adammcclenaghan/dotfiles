@@ -24,6 +24,9 @@ There are two things you can do about this warning:
 ;; Emacs 29: https://www.reddit.com/r/emacs/comments/11a4jz4/emacs_automatically_switches_to_warnings_how_to/
 (setq native-comp-async-report-warnings-errors 'silent)
 
+;; GPG auth sources
+(setq auth-sources '("~/.authinfo.gpg"))
+
 ;; --- THEME ---
 
 (custom-set-variables
@@ -32,7 +35,7 @@ There are two things you can do about this warning:
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(treesit-auto clang-format dired-preview lsp-treemacs treemacs forge helm-config helm-bookmarks helm-imenu helm-occur helm-buffers helm-files helm-command helm-mode helm-lsp treemacs-projectile which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
+   '(erc-image treesit-auto clang-format dired-preview lsp-treemacs treemacs forge helm-config helm-bookmarks helm-imenu helm-occur helm-buffers helm-files helm-command helm-mode helm-lsp treemacs-projectile which-key protobuf-mode dap-mode yasnippet-snippets lsp-ui flycheck lsp-mode lsp-pyright pyenv-mode rustic auto-highlight-symbol highlight-symbol helm-projectile projectile rfc-mode ace-window terraform-mode helm exec-path-from-shell go-mode magit yasnippet company lsp use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -98,6 +101,51 @@ There are two things you can do about this warning:
 
 ;; Rebind xref-go-forward to something more ergonomic for me
 (global-set-key (kbd "M-/") 'xref-go-forward)
+
+;; Define a function to connect to Libera Chat (IRC) using TLS
+;; Many of these shamelessly stolen from https://www.reddit.com/r/emacs/comments/8ml6na/tip_how_to_make_erc_fun_to_use/
+(use-package erc
+  :custom
+  (erc-autojoin-channels-alist '(("#emacs" "#C++" "#C++-general" "C++-basic" "rust")))
+  (erc-autojoin-timing 'ident)
+  (erc-fill-function 'erc-fill-static)
+  (erc-fill-static-center 22)
+  (erc-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-lurker-threshold-time 43200)
+  (erc-prompt-for-nickserv-password nil)
+  (erc-server-reconnect-attempts 5)
+  (erc-server-reconnect-timeout 3)
+  (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
+                             "324" "329" "332" "333" "353" "477"))
+  :config
+  (add-to-list 'erc-modules 'notifications)
+  (add-to-list 'erc-modules 'spelling)
+  (erc-services-mode 1)
+  (erc-update-modules))
+
+;; expects file at ~/.erc-credentials.el like:
+;; (setq erc-nick "username-here")
+(defun my/get-erc-creds ()
+  "Load ERC credentials from ~/.erc-credentials.el"
+  (let ((cred-file "~/.erc-credentials.el"))
+    (when (file-exists-p cred-file)
+      (load cred-file))))
+
+(defun my/erc-start-or-switch ()
+  "Connects to Libera Chat via ERC, or switch to the last active ERC buffer."
+  (interactive)
+  (my/get-erc-creds)  ;; Load credentials before connecting
+  (if (get-buffer "*erc-libera.chat:6697*")
+      (erc-track-switch-buffer 1)
+    (when (y-or-n-p "Start ERC? ")
+      (erc-tls :server "irc.libera.chat"
+               :port 6697
+               :nick erc-nick))))
+
+(use-package erc-image
+  :after erc)
+
 
 ;; Treesit 
 (use-package treesit-auto
@@ -321,8 +369,6 @@ There are two things you can do about this warning:
 ;; NOTE To setup: https://magit.vc/manual/forge.html#Initial-Setup
 (use-package forge
   :after magit)
-(setq auth-sources '("~/.authinfo.gpg"))
-
 
 ;; Project navigation with projectile & helm
 (use-package projectile)
