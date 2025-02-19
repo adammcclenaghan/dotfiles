@@ -448,6 +448,10 @@ There are two things you can do about this warning:
 ;; ------ Configuration for C/C++ -----
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
+
+;; I am often editing c++ and not so often editing c so default to c++ can override on a per-project basis
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
 ;; NOTE: For this to work you need a .clang-format file in your project root.
 ;; Can be created with a command like so:
 ;; clang-format -style=google -dump-config > .clang-format
