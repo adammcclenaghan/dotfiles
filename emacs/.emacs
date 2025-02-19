@@ -104,9 +104,10 @@ There are two things you can do about this warning:
 
 ;; Define a function to connect to Libera Chat (IRC) using TLS
 ;; Many of these shamelessly stolen from https://www.reddit.com/r/emacs/comments/8ml6na/tip_how_to_make_erc_fun_to_use/
+
 (use-package erc
   :custom
-  (erc-autojoin-channels-alist '(("#emacs" "#C++" "#C++-general" "C++-basic" "rust")))
+  (erc-autojoin-channels-alist '(("libera.chat" "#emacs" "#C++" "#C++-general" "#C++-basic" "##rust")))
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
   (erc-fill-static-center 22)
@@ -122,6 +123,7 @@ There are two things you can do about this warning:
   (add-to-list 'erc-modules 'notifications)
   (add-to-list 'erc-modules 'spelling)
   (erc-services-mode 1)
+  (erc-spelling-mode 0)
   (erc-update-modules))
 
 ;; expects file at ~/.erc-credentials.el like:
