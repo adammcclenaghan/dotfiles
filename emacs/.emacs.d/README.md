@@ -19,15 +19,16 @@ Make sure the following are set up **before using** this config:
   - Ensure that $PATH has $GOPATH set in it.
   - debug configuration: https://emacs-lsp.github.io/dap-mode/page/configuration/#go
 - C++ setup: (More info at: https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide)
+  - Install clangd (https://clangd.llvm.org/installation.html)
   - On unix https://github.com/rizsotto/Bear or windows https://github.com/nickdiego/compiledb to generate compile_commands.json so that clangd can understand
   - In project root run:
     - On unix: `bear -- make -j$(nproc)`
     - On windows: `compiledb -n make` 
   - To enable clang formatting, create a clang format file in the project root, eg:
-    - clang-format -style=google -dump-config > .clang-format
+    - `clang-format -style=google -dump-config > .clang-format`
 - Python setup:
   - Pyright must be installed, can install globally with:
-    - npm install -g pyright
+    - `npm install -g pyright`
 
 ## To activate
 - Make a backup of your existing .emacs / .emacs.d if you haven't got it under source control.
