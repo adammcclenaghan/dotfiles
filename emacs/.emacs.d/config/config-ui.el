@@ -1,3 +1,4 @@
+;; This makes scroll a bit nicer, but it can be annoying... not decided whether to keep it or not yet
 (setq scroll-margin 3
       scroll-conservatively 101
       scroll-up-aggressively 0.01
