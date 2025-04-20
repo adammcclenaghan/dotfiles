@@ -39,7 +39,4 @@
               ("M-n" . ahs-forward)))
 (global-auto-highlight-symbol-mode t)
 
-(use-package tree-sitter)
-(use-package tree-sitter-langs)
-
 (provide 'config-editing)
