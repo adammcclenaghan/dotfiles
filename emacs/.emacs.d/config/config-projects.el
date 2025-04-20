@@ -29,9 +29,18 @@
 
 (use-package helm-projectile)
 (use-package projectile)
+; Start projectile commands with C-c p
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (projectile-mode +1)
+(helm-projectile-on)
+;; I would expect this to work if I call C-u C-c pp instead of C-c pp , however it doesn't, so just override it...
+(setq projectile-switch-project-action 'projectile-commander)
 
 (use-package which-key)
 (which-key-mode)
+
+(use-package magit)
+(use-package forge
+  :after magit)
 
 (provide 'config-projects)

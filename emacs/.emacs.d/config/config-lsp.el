@@ -14,7 +14,6 @@
         lsp-response-timeout 10
         lsp-warn-no-matched-clients nil
         gc-cons-threshold (* 100 1024 1024)
-        treemacs-space-between-root-nodes nil
         lsp-idle-delay 0.1))
 
 (add-hook 'prog-mode-hook 'lsp-deferred)

@@ -7,3 +7,6 @@ projectile-bookmarks.eld
 tramp
 tree-sitter
 .lsp-session*
+transient
+recentf
+forge-database.sqlite
