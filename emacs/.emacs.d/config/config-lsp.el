@@ -64,4 +64,9 @@
   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
 
+;; Trying this to fix a bug I've been having where closing some helm minibuffers results in
+;; an error: lsp-ui-doc--move-frame: Wrong type argument: number-or-marker-p, nil
+;; and then I get a duplicated window
+(add-hook 'minibuffer-setup-hook (lambda () (lsp-ui-doc-mode -1)))
+
 (provide 'config-lsp)
