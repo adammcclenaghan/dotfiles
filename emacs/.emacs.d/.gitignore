@@ -5,3 +5,5 @@ elpa
 snippets
 projectile-bookmarks.eld
 tramp
+tree-sitter
+.lsp-session*
