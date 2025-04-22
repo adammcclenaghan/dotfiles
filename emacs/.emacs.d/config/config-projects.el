@@ -45,6 +45,7 @@
          ("C-c h g f" . helm-lsp-global-workspace-symbol)
          ("C-c h s" . helm-lsp-switch-project)
          ("C-c h d" . helm-lsp-diagnostics)
+	 ("C-c h a" . helm-lsp-code-actions)
          (:map lsp-mode-map
                ([remap xref-find-apropos] . helm-lsp-workspace-symbol)))
   :config
