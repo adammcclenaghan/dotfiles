@@ -9,12 +9,35 @@
          ("M-s b" . helm-bookmarks))
   :config
   (require 'helm-autoloads)
-  (setq helm-split-window-inside-p t
-        helm-use-frame-when-more-than-two-windows nil
-        imenu-max-item-length 120
+  (setq imenu-max-item-length 120
         helm-buffer-max-length nil)
   (helm-mode 1)
   (helm-autoresize-mode 1)) ;; TODO: Note sure if want this.
+
+;; This is a bit janky, it breaks helm-occur
+;; Maybe it breaks other stuff too, we'll see
+;; However I am struggling to get helm to actually do this 
+;; in a way that has the frame pop up at the cursor with
+;; the builtin via something like:
+;;(setq helm-display-function 'helm-display-buffer-in-own-frame
+;;      helm-display-buffer-reuse-frame t
+;;      helm-use-undecorated-frame-option t)
+(use-package helm-posframe
+  :after helm
+  :config
+  (setq helm-posframe-poshandler 'posframe-poshandler-point-bottom-left-corner
+        helm-display-function 'helm-posframe-display
+        helm-posframe-border-width 5)
+  (helm-posframe-enable))
+
+;; Helm swoop is a nice way to search within current/all buffers
+;; M-i / M-I to activative, avy supports too so can quickly jump
+;; with M-j afterwards, making avy searching across the file somewhat
+;; possible.
+(use-package helm-swoop
+  :ensure t
+  :bind (("M-i" . helm-swoop)
+         ("M-I" . helm-multi-swoop-all)))
 
 (use-package helm-lsp
   :after (helm lsp-mode lsp-ui)
