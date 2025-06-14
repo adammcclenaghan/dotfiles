@@ -8,10 +8,10 @@
     (add-to-list 'package-archives
                  (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
 
-(unless (package-installed-p 'hc-zenburn-theme)
+(unless (package-installed-p 'modus-themes)
   (package-refresh-contents)
-  (package-install 'hc-zenburn-theme))
+  (package-install 'modus-themes))
 
-(load-theme 'hc-zenburn t)
+(load-theme 'modus-vivendi t)
 
 (provide 'config-packages)
