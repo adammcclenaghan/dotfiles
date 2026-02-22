@@ -29,6 +29,8 @@ Make sure the following are set up **before using** this config:
 - Python setup:
   - Pyright must be installed, can install globally with:
     - `npm install -g pyright`
+- AI Agent setup:
+  - agent-shell: Follow pre-requisite setup instructions at: https://github.com/xenodium/agent-shell
 
 ## To activate
 - Make a backup of your existing .emacs / .emacs.d if you haven't got it under source control.
