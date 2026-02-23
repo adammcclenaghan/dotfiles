@@ -8,6 +8,7 @@
 (require 'config-projects)
 (require 'config-languages)
 (require 'config-irc)
+(require 'config-agents)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
