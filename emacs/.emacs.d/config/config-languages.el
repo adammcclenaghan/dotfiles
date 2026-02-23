@@ -30,6 +30,11 @@
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 (add-hook 'go-mode-hook #'auto-highlight-symbol-mode) ; Seems to be a bug where global doesn't work: https://github.com/elp-revive/auto-highlight-symbol/issues/22
 
+;; go ts mode is not working on mac for me and I haven't got time to fix it 
+(setq major-mode-remap-alist
+       '((go-ts-mode . go-mode)))
+
+
 (use-package terraform-mode)
 ;; Enables using C-c C-f to toggle visbility of a block
 (add-hook 'terraform-mode-hook #'outline-minor-mode)
