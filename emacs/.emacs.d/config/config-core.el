@@ -17,7 +17,7 @@
 (setq inhibit-startup-screen t)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
-(set-frame-font "Hack-16")
+(set-frame-font "Hack-18")
 (ido-mode 1)
 (setq visible-bell nil
       ring-bell-function 'ignore
