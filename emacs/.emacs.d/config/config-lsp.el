@@ -71,6 +71,8 @@
 ;; Trying this to fix a bug I've been having where closing some helm minibuffers results in
 ;; an error: lsp-ui-doc--move-frame: Wrong type argument: number-or-marker-p, nil
 ;; and then I get a duplicated window
-(add-hook 'minibuffer-setup-hook (lambda () (lsp-ui-doc-mode -1)))
+(add-hook 'minibuffer-setup-hook (lambda ()
+  (when (fboundp 'lsp-ui-doc-hide)
+    (lsp-ui-doc-hide))))
 
 (provide 'config-lsp)
