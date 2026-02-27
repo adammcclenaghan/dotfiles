@@ -8,7 +8,8 @@
   (exec-path-from-shell-initialize))
 
 (use-package lsp-mode
-  :bind ("C-c l g i" . lsp-ui-peek-find-implementation)
+  :init
+    (setq lsp-keymap-prefix "C-c l")
   :config
   (setq lsp-use-plists t
         lsp-response-timeout 10
@@ -46,6 +47,9 @@
 (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 
 (use-package lsp-ui
+  :bind (("C-c l G g" . lsp-ui-peek-find-definitions)
+         ("C-c l G r" . lsp-ui-peek-find-references)
+         ("C-c l G i" . lsp-ui-peek-find-implementation))
   :config
   (setq lsp-ui-doc-show-with-cursor t
         lsp-ui-doc-use-webkit t
